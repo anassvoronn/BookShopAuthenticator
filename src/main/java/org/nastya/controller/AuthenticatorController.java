@@ -33,13 +33,13 @@ public class AuthenticatorController {
         Optional<User> userOptional = userService.findByUsername(authRequest.getUsername());
         Session session = new Session();
         if (userOptional.isPresent()) {
-            session.setSession_id(UUID.randomUUID().toString());
-            session.setUser_id(userOptional.get().getId());
+            session.setSessionId(UUID.randomUUID().toString());
+            session.setUserId(userOptional.get().getId());
             sessionService.saveSession(session);
-            ProcessingResponse response = new ProcessingResponse("success", session.getSession_id());
+            ProcessingResponse response = new ProcessingResponse("success", session.getSessionId());
             return ResponseEntity.ok(response);
         } else {
-            ProcessingResponse errorResponse = new ProcessingResponse("error", session.getSession_id());
+            ProcessingResponse errorResponse = new ProcessingResponse("error", session.getSessionId());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }

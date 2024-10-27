@@ -1,11 +1,6 @@
 package org.nastya.entity;
 
-import org.springframework.data.annotation.Id;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -14,12 +9,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String username;
-    private String password_hash;
+    private String password;
 
-    public User(int id, String username, String password_hash) {
+    public User(int id, String username, String password) {
         this.id = id;
         this.username = username;
-        this.password_hash = password_hash;
+        this.password = password;
     }
 
     public User() {
@@ -41,11 +36,11 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword_hash() {
-        return password_hash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

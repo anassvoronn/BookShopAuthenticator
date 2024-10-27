@@ -9,6 +9,9 @@ public class AuthenticatorRequest {
         this.password = password;
     }
 
+    public AuthenticatorRequest() {
+    }
+
     public String getUsername() {
         return username;
     }

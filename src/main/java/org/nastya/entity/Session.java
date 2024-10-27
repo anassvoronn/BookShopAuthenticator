@@ -1,11 +1,6 @@
 package org.nastya.entity;
 
-import org.springframework.data.annotation.Id;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "session")
@@ -13,13 +8,13 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String session_id;
-    private int user_id;
+    private String sessionId;
+    private int userId;
 
     public Session(int id, String session_id, int user_id) {
         this.id = id;
-        this.session_id = session_id;
-        this.user_id = user_id;
+        this.sessionId = session_id;
+        this.userId = user_id;
     }
 
     public Session() {
@@ -33,19 +28,19 @@ public class Session {
         this.id = id;
     }
 
-    public String getSession_id() {
-        return session_id;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setSession_id(String session_id) {
-        this.session_id = session_id;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
