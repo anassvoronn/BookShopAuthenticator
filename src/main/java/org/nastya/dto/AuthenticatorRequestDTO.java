@@ -1,15 +1,15 @@
 package org.nastya.dto;
 
-public class AuthenticatorRequest {
+public class AuthenticatorRequestDTO {
     private String username;
     private String password;
 
-    public AuthenticatorRequest(String username, String password) {
+    public AuthenticatorRequestDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public AuthenticatorRequest() {
+    public AuthenticatorRequestDTO() {
     }
 
     public String getUsername() {

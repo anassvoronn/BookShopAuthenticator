@@ -1,23 +1,17 @@
-package org.nastya.entity;
+package org.nastya.dto;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "session")
-public class Session {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SessionDTO {
     private int id;
     private String sessionId;
     private int userId;
 
-    public Session(int id, String sessionId, int userId) {
+    public SessionDTO(int id, String sessionId, int userId) {
         this.id = id;
         this.sessionId = sessionId;
         this.userId = userId;
     }
 
-    public Session() {
+    public SessionDTO() {
     }
 
     public int getId() {
