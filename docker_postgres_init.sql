@@ -2,6 +2,9 @@
 
 -- DROP TABLE IF EXISTS public.users;
 
+CREATE SEQUENCE users_id_seq START 101;
+CREATE SEQUENCE session_id_seq START 101;
+
 CREATE TABLE IF NOT EXISTS public.users
 (
     id integer NOT NULL,
