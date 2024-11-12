@@ -35,13 +35,14 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         log.info("Received request to create user: {}", userDTO);
-        if (userService.existsByUsername(userDTO.getUsername())) {
+        Optional<UserDTO> savedUser = Optional.ofNullable(userService.saveUser(userDTO));
+        if (savedUser.isPresent()) {
+            log.info("User created successfully: {}", savedUser.get());
+            return ResponseEntity.status(201).body(savedUser.get());
+        } else {
             log.warn("User creation failed: username already exists: {}", userDTO.getUsername());
             return ResponseEntity.badRequest().build();
         }
-        UserDTO savedUser = userService.saveUser(userDTO);
-        log.info("User created successfully: {}", savedUser);
-        return ResponseEntity.status(201).body(savedUser);
     }
 
     @DeleteMapping("/{id}")

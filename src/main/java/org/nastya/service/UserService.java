@@ -36,6 +36,10 @@ public class UserService {
     }
 
     public UserDTO saveUser(UserDTO userDTO) {
+        if (existsByUsername(userDTO.getUsername())) {
+            log.warn("User with username {} already exists.", userDTO.getUsername());
+            return userDTO;
+        }
         log.info("Saving user: {}", userDTO);
         User user = userMapper.mapToUser(userDTO);
         User savedUser = userRepository.save(user);
