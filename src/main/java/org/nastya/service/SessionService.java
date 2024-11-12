@@ -3,12 +3,15 @@ package org.nastya.service;
 import org.nastya.dto.SessionDTO;
 import org.nastya.entity.Session;
 import org.nastya.repository.SessionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class SessionService {
+    private static final Logger log = LoggerFactory.getLogger(SessionService.class);
     private final SessionRepository sessionRepository;
     private final SessionMapper sessionMapper;
 
@@ -18,22 +21,32 @@ public class SessionService {
     }
 
     public Optional<SessionDTO> findBySessionId(String sessionId) {
-        return sessionRepository.findBySessionId(sessionId)
+        log.info("Finding session by sessionId: {}", sessionId);
+        Optional<SessionDTO> sessionDTO = sessionRepository.findBySessionId(sessionId)
                 .map(sessionMapper::mapToSessionFormDTO);
+        log.info("Session found: {}", sessionDTO.isPresent() ? sessionDTO.get() : "No session found");
+        return sessionDTO;
     }
 
     public void deleteBySessionId(String sessionId) {
+        log.info("Deleting session with sessionId: {}", sessionId);
         sessionRepository.deleteBySessionId(sessionId);
+        log.info("Session with sessionId {} deleted", sessionId);
     }
 
     public SessionDTO saveSession(SessionDTO sessionDTO) {
+        log.info("Saving session: {}", sessionDTO);
         Session session = sessionMapper.mapToSession(sessionDTO);
         Session savedSession = sessionRepository.save(session);
+        log.info("Session saved: {}", savedSession);
         return sessionMapper.mapToSessionFormDTO(savedSession);
     }
 
     public boolean isSessionActive(String sessionId) {
+        log.info("Checking if session is active for sessionId: {}", sessionId);
         Optional<Session> session = sessionRepository.findBySessionId(sessionId);
-        return session.isPresent();
+        boolean isActive = session.isPresent();
+        log.info("Is session active: {}", isActive);
+        return isActive;
     }
 }

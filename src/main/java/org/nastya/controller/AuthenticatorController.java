@@ -2,18 +2,16 @@ package org.nastya.controller;
 
 import org.nastya.dto.AuthenticatorRequestDTO;
 import org.nastya.dto.AuthenticationResponseDTO;
-import org.nastya.enums.AuthenticationStatus;
 import org.nastya.service.AuthenticatorService;
-import org.springframework.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/authenticator")
 public class AuthenticatorController {
+    private static final Logger log = LoggerFactory.getLogger(AuthenticatorService.class);
     private final AuthenticatorService authenticatorService;
 
     public AuthenticatorController(AuthenticatorService authenticatorService) {
@@ -21,12 +19,19 @@ public class AuthenticatorController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticatorRequestDTO authRequest) {
-        AuthenticationResponseDTO response = authenticatorService.login(authRequest.getUsername(), authRequest.getPassword());
-        if (response.getStatus() == AuthenticationStatus.SUCCESS) {
+    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticatorRequestDTO authRequest) {
+        log.info("Received login request for username: {}", authRequest.getUsername());
+        AuthenticationResponseDTO response = authenticatorService.
+                login(
+                        authRequest.getUsername(),
+                        authRequest.getPassword()
+                );
+        if (response != null) {
+            log.info("Login successful for username: {}", authRequest.getUsername());
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            log.warn("Login failed for username: {}", authRequest.getUsername());
+            return ResponseEntity.status(401).build();
         }
     }
 }
