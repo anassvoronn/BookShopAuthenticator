@@ -3,6 +3,7 @@ package org.nastya.service;
 import org.nastya.dto.UserDTO;
 import org.nastya.entity.User;
 import org.nastya.repository.UserRepository;
+import org.nastya.service.exception.UserAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,10 @@ public class UserService {
         return exists;
     }
 
-    public UserDTO saveUser(UserDTO userDTO) {
+    public UserDTO saveUser(UserDTO userDTO) throws UserAlreadyExistsException {
         if (existsByUsername(userDTO.getUsername())) {
             log.warn("User with username {} already exists.", userDTO.getUsername());
-            return userDTO;
+            throw new UserAlreadyExistsException("User with username " + userDTO.getUsername() + " already exists.");
         }
         log.info("Saving user: {}", userDTO);
         User user = userMapper.mapToUser(userDTO);
