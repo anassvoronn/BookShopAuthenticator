@@ -28,7 +28,7 @@ public class SessionController {
             return ResponseEntity.ok(session.get());
         } else {
             log.warn("Session not found for ID: {}", sessionId);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
     }
 
