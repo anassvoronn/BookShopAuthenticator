@@ -1,19 +1,21 @@
 package org.nastya.dto;
 
-public class ProcessingResponse {
-    private String status;
+import org.nastya.enums.AuthenticationStatus;
+
+public class AuthenticationResponseDTO {
+    private AuthenticationStatus status;
     private String sessionId;
 
-    public ProcessingResponse(String status, String sessionId) {
+    public AuthenticationResponseDTO(AuthenticationStatus status, String sessionId) {
         this.status = status;
         this.sessionId = sessionId;
     }
 
-    public String getStatus() {
+    public AuthenticationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(AuthenticationStatus status) {
         this.status = status;
     }
 

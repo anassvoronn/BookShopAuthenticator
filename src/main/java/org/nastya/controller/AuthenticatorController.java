@@ -1,46 +1,34 @@
 package org.nastya.controller;
 
-import org.nastya.dto.AuthenticatorRequest;
-import org.nastya.dto.ProcessingResponse;
-import org.nastya.entity.Session;
-import org.nastya.entity.User;
-import org.nastya.service.SessionService;
-import org.nastya.service.UserService;
-import org.springframework.http.HttpStatus;
+import org.nastya.dto.AuthenticationResponseDTO;
+import org.nastya.dto.AuthenticatorRequestDTO;
+import org.nastya.service.AuthenticatorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/api/authenticator")
 public class AuthenticatorController {
+    private static final Logger log = LoggerFactory.getLogger(AuthenticatorService.class);
+    private final AuthenticatorService authenticatorService;
 
-    private final UserService userService;
-    private final SessionService sessionService;
-
-    public AuthenticatorController(UserService userService, SessionService sessionService) {
-        this.userService = userService;
-        this.sessionService = sessionService;
+    public AuthenticatorController(AuthenticatorService authenticatorService) {
+        this.authenticatorService = authenticatorService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticatorRequest authRequest) {
-        Optional<User> userOptional = userService.findByUsername(authRequest.getUsername());
-        Session session = new Session();
-        if (userOptional.isPresent()) {
-            session.setSessionId(UUID.randomUUID().toString());
-            session.setUserId(userOptional.get().getId());
-            sessionService.saveSession(session);
-            ProcessingResponse response = new ProcessingResponse("success", session.getSessionId());
-            return ResponseEntity.ok(response);
-        } else {
-            ProcessingResponse errorResponse = new ProcessingResponse("error", session.getSessionId());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        }
+    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticatorRequestDTO authRequest) {
+        log.info("Received login request for username: {}", authRequest.getUsername());
+        AuthenticationResponseDTO response = authenticatorService.login(
+                authRequest.getUsername(),
+                authRequest.getPassword()
+        );
+        log.info("Login {} for username: {}", response.getStatus(), authRequest.getUsername());
+        return ResponseEntity.ok(response);
     }
 }
