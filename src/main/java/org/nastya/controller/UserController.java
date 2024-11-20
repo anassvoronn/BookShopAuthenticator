@@ -5,6 +5,7 @@ import org.nastya.service.exception.UserAlreadyExistsException;
 import org.nastya.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,10 +36,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO, @RequestHeader(HttpHeaders.AUTHORIZATION) HttpHeaders headers) {
         log.info("Received request to create user: {}", userDTO);
         try {
-            UserDTO savedUser = userService.saveUser(userDTO);
+            UserDTO savedUser = userService.saveUser(userDTO, headers);
             log.info("User created successfully: {}", savedUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
         } catch (UserAlreadyExistsException e) {

@@ -6,6 +6,7 @@ import org.nastya.repository.UserRepository;
 import org.nastya.service.exception.UserAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class UserService {
         return exists;
     }
 
-    public UserDTO saveUser(UserDTO userDTO) throws UserAlreadyExistsException {
+    public synchronized UserDTO saveUser(UserDTO userDTO, HttpHeaders headers) throws UserAlreadyExistsException {
         if (existsByUsername(userDTO.getUsername())) {
             log.warn("User with username {} already exists.", userDTO.getUsername());
             throw new UserAlreadyExistsException("User with username " + userDTO.getUsername() + " already exists.");
