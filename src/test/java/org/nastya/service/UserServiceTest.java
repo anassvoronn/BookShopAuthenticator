@@ -26,7 +26,7 @@ public class UserServiceTest {
     }
 
     @RepeatedTest(20)
-    public void userUniqueness_sequential() {
+    public void userUniqueness_parallel() {
         final String userName = "user1";
         final String password = "123";
 
@@ -45,7 +45,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void userUniqueness_parallel() throws UserAlreadyExistsException {
+    public void userUniqueness_sequential() throws UserAlreadyExistsException {
         final String userName = "user1";
         final String password = "123";
 
