@@ -8,7 +8,6 @@ import org.nastya.repository.UserRepository;
 import org.nastya.service.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -27,17 +26,15 @@ public class UserServiceTest {
     }
 
     @RepeatedTest(20)
-    public void userUniqueness_parallel() throws InterruptedException {
+    public void userUniqueness_sequential() {
         final String userName = "user1";
         final String password = "123";
 
         final UserDTO user1 = createUserDTO(userName, password);
         final UserDTO user2 = createUserDTO(userName, password);
 
-        final HttpHeaders headers = new HttpHeaders();
-
-        final Thread thread1 = new Thread(() -> saveUser(user1, headers));
-        final Thread thread2 = new Thread(() -> saveUser(user2, headers));
+        final Thread thread1 = new Thread(() -> saveUser(user1));
+        final Thread thread2 = new Thread(() -> saveUser(user2));
         thread1.start();
         thread2.start();
 
@@ -48,18 +45,16 @@ public class UserServiceTest {
     }
 
     @Test
-    public void userUniqueness_sequential() throws UserAlreadyExistsException {
+    public void userUniqueness_parallel() throws UserAlreadyExistsException {
         final String userName = "user1";
         final String password = "123";
 
         final UserDTO user1 = createUserDTO(userName, password);
         final UserDTO user2 = createUserDTO(userName, password);
 
-        final HttpHeaders headers = new HttpHeaders();
-
-        userService.saveUser(user1, headers);
+        userService.saveUser(user1);
         try {
-            userService.saveUser(user2, headers);
+            userService.saveUser(user2);
             fail();
         } catch (UserAlreadyExistsException ignored) {
         }
@@ -67,9 +62,9 @@ public class UserServiceTest {
         assertEquals(1, userRepository.findAll().size());
     }
 
-    private UserDTO saveUser(UserDTO user, HttpHeaders headers) {
+    private UserDTO saveUser(UserDTO user) {
         try {
-            return userService.saveUser(user, headers);
+            return userService.saveUser(user);
         } catch (UserAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
