@@ -41,6 +41,10 @@ public class UserService {
             log.warn("User with username {} already exists.", userDTO.getUsername());
             throw new UserAlreadyExistsException("User with username " + userDTO.getUsername() + " already exists.");
         }
+        if (userDTO.getPassword() == null || userDTO.getPassword().isEmpty()) {
+            log.warn("Attempted to save user without a password: {}", userDTO);
+            throw new IllegalArgumentException("Password must not be empty.");
+        }
         log.info("Saving user: {}", userDTO);
         User user = userMapper.mapToUser(userDTO);
         User savedUser = userRepository.save(user);
