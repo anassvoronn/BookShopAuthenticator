@@ -9,7 +9,8 @@ import org.nastya.service.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class UserServiceTest {
@@ -59,19 +60,6 @@ public class UserServiceTest {
         }
 
         assertEquals(1, userRepository.findAll().size());
-    }
-
-    @Test
-    public void saveUser_withoutPassword_throwsIllegalArgumentException() {
-        final String userName = "user1";
-
-        final UserDTO user1 = createUserDTO(userName, null);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userService.saveUser(user1);
-        });
-
-        assertEquals("Password must not be empty.", exception.getMessage());
     }
 
     private UserDTO saveUser(UserDTO user) {

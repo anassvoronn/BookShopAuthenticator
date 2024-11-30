@@ -44,9 +44,6 @@ public class UserController {
         } catch (UserAlreadyExistsException e) {
             log.warn("User creation failed: username already exists: {}", userDTO.getUsername(), e);
             throw new RuntimeException("User already exists", e);
-        } catch (IllegalArgumentException e) {
-            log.warn("User creation failed: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
