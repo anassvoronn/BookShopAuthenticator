@@ -10,6 +10,7 @@ public class User {
     private int id;
     @Column(unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
 
     public User(int id, String username, String password) {

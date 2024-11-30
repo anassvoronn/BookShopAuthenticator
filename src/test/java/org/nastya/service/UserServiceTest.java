@@ -8,9 +8,9 @@ import org.nastya.repository.UserRepository;
 import org.nastya.service.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class UserServiceTest {
@@ -68,6 +68,17 @@ public class UserServiceTest {
         } catch (UserAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    public void saveUser_withoutPassword_throwsIllegalArgumentException() {
+        final String userName = "user1";
+
+        final UserDTO user1 = createUserDTO(userName, null);
+
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            userService.saveUser(user1);
+        });
     }
 
     private UserDTO createUserDTO(String userName, String password) {

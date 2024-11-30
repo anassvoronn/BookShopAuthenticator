@@ -1,7 +1,6 @@
 package org.nastya.controller;
 
 import org.nastya.dto.UserDTO;
-import org.nastya.service.exception.UserAlreadyExistsException;
 import org.nastya.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +36,9 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         log.info("Received request to create user: {}", userDTO);
-        try {
-            UserDTO savedUser = userService.saveUser(userDTO);
-            log.info("User created successfully: {}", savedUser);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
-        } catch (UserAlreadyExistsException e) {
-            log.warn("User creation failed: username already exists: {}", userDTO.getUsername(), e);
-            throw new RuntimeException("User already exists", e);
-        }
+        UserDTO savedUser = userService.saveUser(userDTO);
+        log.info("User created successfully: {}", savedUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @DeleteMapping("/{id}")

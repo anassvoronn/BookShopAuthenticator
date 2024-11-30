@@ -36,7 +36,7 @@ public class UserService {
         return exists;
     }
 
-    public UserDTO saveUser(UserDTO userDTO) throws UserAlreadyExistsException {
+    public UserDTO saveUser(UserDTO userDTO) {
         if (existsByUsername(userDTO.getUsername())) {
             log.warn("User with username {} already exists.", userDTO.getUsername());
             throw new UserAlreadyExistsException("User with username " + userDTO.getUsername() + " already exists.");
