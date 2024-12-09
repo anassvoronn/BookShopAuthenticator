@@ -8,3 +8,7 @@ spring:
     driverClassName: org.postgresql.Driver
     username: postgres
     password: vampyrrr9712
+
+session:
+  expiration:
+    minutes: 20

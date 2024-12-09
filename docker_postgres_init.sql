@@ -31,3 +31,5 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.session
     OWNER to postgres;
+
+ALTER TABLE session ADD COLUMN status character varying(50) COLLATE pg_catalog."default", "time" timestamp without time zone;

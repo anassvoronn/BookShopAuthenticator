@@ -44,9 +44,8 @@ public class SessionService {
 
     public boolean isSessionActive(String sessionId) {
         log.info("Checking if session is active for sessionId: {}", sessionId);
-        Optional<Session> session = sessionRepository.findBySessionId(sessionId);
-        boolean isActive = session.isPresent();
-        log.info("Is session active: {}", isActive);
-        return isActive;
+        return sessionRepository.findBySessionId(sessionId)
+                .map(Session::isActive)
+                .orElse(false);
     }
 }
