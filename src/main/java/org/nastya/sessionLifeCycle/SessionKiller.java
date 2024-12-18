@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 public class SessionKiller {
@@ -29,14 +29,11 @@ public class SessionKiller {
         return LocalDateTime.now().minusMinutes(expirationMinutes);
     }
 
+    @Transactional
     @Scheduled(fixedRate = 60000)
     public void expireOldSessions() {
         LocalDateTime expirationTime = getExpirationTime();
-        List<Session> expiredSessions = sessionRepository.findExpiredSessions(expirationTime);
-        for (Session session : expiredSessions) {
-            session.setStatus(SessionStatus.EXPIRED);
-            sessionRepository.save(session);
-        }
-        log.info("Session statuses updated: {}", expiredSessions.size());
+        int countExpiredSessions = sessionRepository.expireActiveSessions(expirationTime);
+        log.info("Session statuses updated: {}", countExpiredSessions);
     }
 }
