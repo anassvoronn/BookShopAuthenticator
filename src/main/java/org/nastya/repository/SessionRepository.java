@@ -1,6 +1,7 @@
 package org.nastya.repository;
 
 import org.nastya.entity.Session;
+import org.nastya.enums.SessionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +20,6 @@ public interface SessionRepository extends JpaRepository<Session, Integer> {
 
     @Query("SELECT s FROM Session s WHERE s.status = 'ACTIVE' AND s.time < :expirationTime")
     List<Session> findExpiredSessions(@Param("expirationTime") LocalDateTime expirationTime);
+
+    List<Session> findByUserIdAndStatus(int userId, SessionStatus status);
 }

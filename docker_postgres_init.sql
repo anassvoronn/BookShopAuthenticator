@@ -32,4 +32,12 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.session
     OWNER to postgres;
 
-ALTER TABLE session ADD COLUMN status character varying(50) COLLATE pg_catalog."default", "time" timestamp without time zone;
+ALTER TABLE session ADD COLUMN status character varying(50) COLLATE pg_catalog."default" NOT NULL,
+ADD COLUMN "time" timestamp without time zone;
+
+ALTER TABLE public.session
+ADD CONSTRAINT fk_user
+FOREIGN KEY (user_id) REFERENCES public.users (id)
+ON DELETE CASCADE;
+
+CREATE UNIQUE INDEX unique_active_session ON public.session (user_id, status) WHERE status = 'ACTIVE';

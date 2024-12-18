@@ -4,6 +4,7 @@ import org.nastya.enums.SessionStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "session")
@@ -26,6 +27,16 @@ public class Session {
         this.time = LocalDateTime.now();
     }
 
+    public Session(SessionStatus status, int userId) {
+        this.status = status;
+        this.userId = userId;
+        this.sessionId = UUID.randomUUID().toString();
+        this.time = LocalDateTime.now();
+    }
+
+    public Session() {
+    }
+
     public SessionStatus getStatus() {
         return status;
     }
@@ -40,9 +51,6 @@ public class Session {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
-    }
-
-    public Session() {
     }
 
     public int getId() {
