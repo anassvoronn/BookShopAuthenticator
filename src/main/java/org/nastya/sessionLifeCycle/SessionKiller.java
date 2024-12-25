@@ -1,7 +1,5 @@
 package org.nastya.sessionLifeCycle;
 
-import org.nastya.entity.Session;
-import org.nastya.enums.SessionStatus;
 import org.nastya.repository.SessionRepository;
 import org.nastya.service.SessionService;
 import org.slf4j.Logger;
