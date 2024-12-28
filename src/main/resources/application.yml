@@ -4,7 +4,7 @@ server:
     context-path: /book-shop-authenticator
 spring:
   datasource:
-    url: jdbc:postgresql://localhost/Authenticator
+    url: jdbc:postgresql://localhost:15433/Authenticator
     driverClassName: org.postgresql.Driver
     username: postgres
     password: vampyrrr9712
