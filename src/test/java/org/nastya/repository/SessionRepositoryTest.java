@@ -53,7 +53,7 @@ public class SessionRepositoryTest {
         sessionRepository.save(session1);
         sessionRepository.save(session2);
 
-        List<Session> result = sessionRepository.findByUserIdAndStatus(userId, SessionStatus.EXPIRED);
+        List<Session> result = sessionRepository.findActiveSessionByUserId(userId, SessionStatus.EXPIRED);
 
         assertEquals(2, result.size());
         assertTrue(result.stream().allMatch(session -> session.getStatus() == SessionStatus.EXPIRED));
@@ -68,8 +68,8 @@ public class SessionRepositoryTest {
         sessionRepository.save(activeSession);
         sessionRepository.save(expiredSession);
 
-        List<Session> activeSessions = sessionRepository.findByUserIdAndStatus(userId, SessionStatus.ACTIVE);
-        List<Session> expiredSessions = sessionRepository.findByUserIdAndStatus(userId, SessionStatus.EXPIRED);
+        List<Session> activeSessions = sessionRepository.findActiveSessionByUserId(userId, SessionStatus.ACTIVE);
+        List<Session> expiredSessions = sessionRepository.findActiveSessionByUserId(userId, SessionStatus.EXPIRED);
 
         assertEquals(1, activeSessions.size());
         assertEquals(SessionStatus.ACTIVE, activeSessions.get(0).getStatus());

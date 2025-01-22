@@ -30,8 +30,9 @@ public class AuthenticatorService {
             log.info("User found: {}", userDTO.getUsername());
             if (userDTO.getPassword().equals(password)) {
                 log.info("Password is correct for user: {}", username);
-                SessionDTO existingSession = sessionService.findSessionByUserId(userDTO.getId());
-                if (existingSession != null) {
+                Optional<SessionDTO> existingSessionOptional = sessionService.findSessionByUserId(userDTO.getId());
+                if (existingSessionOptional.isPresent()) {
+                    SessionDTO existingSession = existingSessionOptional.get();
                     String newSessionId = UUID.randomUUID().toString();
                     existingSession.setSessionId(newSessionId);
                     sessionService.saveSession(existingSession);
