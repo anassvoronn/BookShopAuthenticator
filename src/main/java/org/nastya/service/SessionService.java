@@ -52,8 +52,7 @@ public class SessionService {
     }
 
     public Optional<SessionDTO> findSessionByUserId(int userId) {
-        int userIdInt = Integer.parseInt(String.valueOf(userId));
-        List<Session> sessions = sessionRepository.findActiveSessionByUserId(userIdInt, SessionStatus.ACTIVE);
+        List<Session> sessions = sessionRepository.findByUserIdAndStatus(userId, SessionStatus.ACTIVE);
         if (!sessions.isEmpty()) {
             Session session = sessions.get(0);
             SessionDTO sessionDTO = sessionMapper.mapToSessionFormDTO(session);

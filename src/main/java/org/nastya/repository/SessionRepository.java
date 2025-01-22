@@ -23,6 +23,5 @@ public interface SessionRepository extends JpaRepository<Session, Integer> {
     @Query("UPDATE Session SET status = 'EXPIRED' WHERE status = 'ACTIVE' AND time < :expirationTime")
     int expireActiveSessions(@Param("expirationTime") LocalDateTime expirationTime);
 
-    @Query("SELECT s FROM Session s WHERE s.userId = :userId AND s.status = :status")
-    List<Session> findActiveSessionByUserId(@Param("userId") int userId, @Param("status") SessionStatus status);
+    List<Session> findByUserIdAndStatus(int userId, SessionStatus status);
 }
