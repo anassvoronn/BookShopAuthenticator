@@ -31,21 +31,19 @@ public class AuthenticatorService {
             if (userDTO.getPassword().equals(password)) {
                 log.info("Password is correct for user: {}", username);
                 Optional<SessionDTO> existingSessionOptional = sessionService.findSessionByUserId(userDTO.getId());
+                SessionDTO sessionDTO;
                 if (existingSessionOptional.isPresent()) {
-                    SessionDTO existingSession = existingSessionOptional.get();
+                    sessionDTO = existingSessionOptional.get();
                     String newSessionId = UUID.randomUUID().toString();
-                    existingSession.setSessionId(newSessionId);
-                    sessionService.saveSession(existingSession);
-                    log.info("Session updated for user: {}, new sessionId: {}", username, newSessionId);
-                    return new AuthenticationResponseDTO(AuthenticationStatus.SUCCESS, newSessionId);
+                    sessionDTO.setSessionId(newSessionId);
                 } else {
-                    SessionDTO newSession = new SessionDTO();
-                    newSession.setSessionId(UUID.randomUUID().toString());
-                    newSession.setUserId(userDTO.getId());
-                    sessionService.saveSession(newSession);
-                    log.info("New session created for user: {}, sessionId: {}", username, newSession.getSessionId());
-                    return new AuthenticationResponseDTO(AuthenticationStatus.SUCCESS, newSession.getSessionId());
+                    sessionDTO = new SessionDTO();
+                    sessionDTO.setSessionId(UUID.randomUUID().toString());
+                    sessionDTO.setUserId(userDTO.getId());
                 }
+                sessionService.saveSession(sessionDTO);
+                log.info("New session Id created for user: {}, sessionId: {}", username, sessionDTO.getSessionId());
+                return new AuthenticationResponseDTO(AuthenticationStatus.SUCCESS, sessionDTO.getSessionId());
             } else {
                 log.warn("Invalid password for user: {}", username);
                 return new AuthenticationResponseDTO(AuthenticationStatus.INVALID_PASSWORD, null);
