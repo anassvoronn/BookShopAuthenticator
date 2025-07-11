@@ -1,7 +1,7 @@
 package org.nastya.service;
 
 import org.nastya.dto.AuthenticationResponseDTO;
-import org.nastya.dto.SessionDTO;
+import org.nastya.lib.auth.dto.SessionDTO;
 import org.nastya.dto.UserDTO;
 import org.nastya.enums.AuthenticationStatus;
 import org.slf4j.Logger;
@@ -31,16 +31,10 @@ public class AuthenticatorService {
             if (userDTO.getPassword().equals(password)) {
                 log.info("Password is correct for user: {}", username);
                 Optional<SessionDTO> existingSessionOptional = sessionService.findSessionByUserId(userDTO.getId());
-                SessionDTO sessionDTO;
-                if (existingSessionOptional.isPresent()) {
-                    sessionDTO = existingSessionOptional.get();
-                    String newSessionId = UUID.randomUUID().toString();
-                    sessionDTO.setSessionId(newSessionId);
-                } else {
-                    sessionDTO = new SessionDTO();
-                    sessionDTO.setSessionId(UUID.randomUUID().toString());
-                    sessionDTO.setUserId(userDTO.getId());
-                }
+                String newSessionId = UUID.randomUUID().toString();
+                SessionDTO sessionDTO = existingSessionOptional
+                        .map(dto -> new SessionDTO(dto, newSessionId))
+                        .orElseGet(() -> new SessionDTO(0, newSessionId, userDTO.getId()));
                 sessionService.saveSession(sessionDTO);
                 log.info("New session Id created for user: {}, sessionId: {}", username, sessionDTO.getSessionId());
                 return new AuthenticationResponseDTO(AuthenticationStatus.SUCCESS, sessionDTO.getSessionId());
