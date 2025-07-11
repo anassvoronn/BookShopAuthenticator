@@ -1,6 +1,6 @@
 package org.nastya.service;
 
-import org.nastya.dto.SessionDTO;
+import org.nastya.lib.auth.dto.SessionDTO;
 import org.nastya.entity.Session;
 import org.nastya.enums.SessionStatus;
 import org.nastya.repository.SessionRepository;

@@ -1,6 +1,6 @@
 package org.nastya.controller;
 
-import org.nastya.dto.SessionDTO;
+import org.nastya.lib.auth.dto.SessionDTO;
 import org.nastya.service.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
