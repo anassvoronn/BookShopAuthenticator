@@ -1,7 +1,6 @@
-package org.nastya.sessionLifeCycle;
+package org.nastya.service;
 
 import org.nastya.repository.SessionRepository;
-import org.nastya.service.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

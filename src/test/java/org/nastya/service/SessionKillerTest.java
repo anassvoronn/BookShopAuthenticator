@@ -1,4 +1,4 @@
-package org.nastya.lifeSession;
+package org.nastya.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,6 @@ import org.nastya.entity.User;
 import org.nastya.enums.SessionStatus;
 import org.nastya.repository.SessionRepository;
 import org.nastya.repository.UserRepository;
-import org.nastya.sessionLifeCycle.SessionKiller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
